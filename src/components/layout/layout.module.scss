@@ -1,0 +1,9 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 26px;
+}

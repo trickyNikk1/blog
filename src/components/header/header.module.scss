@@ -1,0 +1,54 @@
+@import '/src/variables/variables.scss';
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1440px;
+    height: 80px;
+    background-color: $background-color-base;
+    padding: 0 20px 0 15px;
+    flex-shrink: 0;
+}
+.link:hover {
+    color: transparent;
+    background: #666666;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    text-shadow: 0px 3px 3px rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease-in-out;
+}
+.link_active {
+    text-decoration: underline;
+}
+.link_home {
+    color: $heading-color;
+    text-decoration: none;
+    font-size: $header-font-size;
+    font-weight: 400;
+    line-height: 28px;
+    padding: 5px;
+}
+.link_signIn {
+    font-size: $header-font-size;
+    text-decoration: none;
+    color: $heading-color;
+    padding: 10px 19px;
+    white-space: nowrap;
+}
+.link_signUp {
+    font-size: $header-font-size;
+    text-decoration: none;
+    color: $success-color;
+    padding: 10px 18.7px 10px 18.7px;
+    border: 1px solid $success-color;
+    border-radius: 5px;
+    white-space: nowrap;
+    &:hover {
+        color: $background-color-base;
+        background-color: $success-color;
+        background-clip: border-box;
+    }
+}
+

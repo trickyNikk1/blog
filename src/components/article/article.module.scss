@@ -1,0 +1,134 @@
+@import '/src/variables/variables.scss';
+
+.article {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: space-between;
+    width: 100%;
+    background-color: $background-color-base;
+    padding: 15px 16px;
+    border-radius: 5px;
+    box-shadow: $shadow-2;
+    gap: 16px;
+    overflow: auto;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 682px;
+    gap: 4px;
+}
+
+.tags {
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.tag {
+    color: $text-color-secondary;
+    border: 1px solid $text-color-secondary;
+    border-radius: 2px;
+    padding: 0 6px;
+    &_active {
+        color: $text-color;
+        border: 1px solid $text-color;
+        border-radius: 2px;
+        padding: 0 6px;
+    }
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 13px
+}
+
+.link {
+    color: inherit;
+    text-decoration: none;
+    &:hover .avatar {
+        transform: scale(1.1);
+        transition: all 0.3s ease-in-out;
+    }
+}
+
+.title {
+    margin: 0;
+    font-size: 20px;
+    line-height: 28px;
+    color: $info-color;
+}
+
+.description {
+    margin: 0;
+}
+
+.heart {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.button_heart {
+    padding: 0;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;;
+}
+
+.button_heart:hover .icon {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+
+    & path {
+        fill: $highlight-color;
+    }
+}
+
+.button_heart:disabled:hover .icon {
+    cursor: initial;
+    transform: none;
+    transition: all 0.3s ease-in-out;
+    & path {
+        fill: initial;
+    }
+}
+
+
+
+.info{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+}
+.info_text{
+    display: flex;
+    flex-direction: column;
+}
+.author{
+    white-space: nowrap;
+    color: $heading-color;
+    font-size: 18px;
+    line-height: 28px;
+}
+.date{
+    white-space: nowrap;
+    color: $text-color-secondary;
+}
+.avatar-wrapper {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.avatar{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
