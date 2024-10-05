@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { Pagination, Spin, Alert, ConfigProvider } from 'antd'
-import { useNavigate } from 'react-router-dom'
 
 import { getArticlesData } from '../../store/articlesSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import Article from '../article/article'
+import Article from '../../components/article'
 
-import styles from './articles-list.module.scss'
-
-export default function ArticlesList({ page }: { page: number }) {
+import styles from './articles-list-page.module.scss'
+export default function ArticlesListPage() {
+  const [searchParams] = useSearchParams()
+  const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(getArticlesData(page))
-  }, [page])
+  }, [dispatch, page])
   const { articles: data, articlesCount, loading, error } = useAppSelector((state) => state.ArticlesSlice)
   const articles = data.map((articleData) => {
     return <Article key={articleData.slug} articleData={articleData} />

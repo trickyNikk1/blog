@@ -4,7 +4,7 @@ import { Spin, Alert } from 'antd'
 
 import { getArticleData } from '../../store/articleSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import Article from '../article'
+import Article from '../../components/article'
 export default function ArticlePage() {
   const { slug } = useParams()
   const dispatch = useAppDispatch()
