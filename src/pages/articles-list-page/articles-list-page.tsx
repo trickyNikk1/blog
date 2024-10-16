@@ -15,19 +15,19 @@ export default function ArticlesListPage() {
   useEffect(() => {
     dispatch(getArticlesData(page))
   }, [dispatch, page])
-  const { articles: data, articlesCount, loading, error } = useAppSelector((state) => state.ArticlesSlice)
+  const { articles: data, articlesCount, loading, error } = useAppSelector((state) => state.articles)
   const articles = data.map((articleData) => {
     return <Article key={articleData.slug} articleData={articleData} />
   })
   const spinner = loading === 'pending' ? <Spin /> : null
-  const errorMessage = error ? <Alert message={error} type="error" /> : null
+  const errorMessage = error ? <Alert message={`Ooops! ${error.message}`} type="error" /> : null
   return (
     <>
-      <div className={styles.list}>
+      <section className={styles.list}>
         {spinner}
         {errorMessage}
         {articles}
-      </div>
+      </section>
       <ConfigProvider
         theme={{
           components: {

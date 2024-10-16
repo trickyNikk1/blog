@@ -1,41 +1,44 @@
 import React, { useEffect } from 'react'
 import type { FormProps } from 'antd'
-import { Form, Input, Checkbox, Button, Alert } from 'antd'
-import { Link, useNavigate } from 'react-router-dom'
+import { Form, Input, Button, Alert } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
-import { rebootLoading, registerNewUser } from '../../store/authSlice'
 import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
+import { updateProfile } from '../../store/authSlice'
 
-import styles from './sign-up-page.module.scss'
+import styles from './edit-profile-page.module.scss'
 
 type FieldType = {
   username?: string
   email?: string
   password?: string
-  repeatPassword?: string
-  agreement?: string
+  image?: string
 }
-
-export default function SignUnPage() {
+function EditProfilePage() {
   const navigate = useNavigate()
   const { isAuth } = useAuth()
   const [form] = Form.useForm<FieldType>()
   const dispatch = useAppDispatch()
-  const { loading, error } = useAppSelector((state) => state.auth)
+  const { loading, error, user } = useAppSelector((state) => state.auth)
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    if (values.password && values.email && values.username) {
-      const user = {
-        username: values.username,
-        email: values.email,
-        password: values.password,
-      }
-      dispatch(registerNewUser(user))
+    const userData = {
+      username: values.username,
+      email: values.email,
+      password: values.password,
+      image: values.image,
+      token: user.token,
+    } as {
+      username: string
+      email: string
+      password: string
+      image: string
+      token: string
     }
+    dispatch(updateProfile(userData))
   }
   useEffect(() => {
-    if (isAuth) {
-      dispatch(rebootLoading())
-      navigate('/')
+    if (!isAuth) {
+      navigate('/sign-up')
     }
   }, [isAuth, navigate])
   useEffect(() => {
@@ -44,6 +47,7 @@ export default function SignUnPage() {
         { name: 'username', errors: error.errors?.username ? [error.errors?.username] : undefined },
         { name: 'email', errors: error.errors?.email ? [error.errors?.email] : undefined },
         { name: 'password', errors: error.errors?.password ? [error.errors?.password] : undefined },
+        { name: 'image', errors: error.errors?.image ? [error.errors?.image] : undefined },
       ])
     }
   }, [error])
@@ -56,13 +60,13 @@ export default function SignUnPage() {
         <Alert message={error.errors.error?.status + ' ' + error.errors.message} type="error" />
       ) : null}
       <div className={styles.container}>
-        <h1 className={styles.title}>Create new account</h1>
+        <h1 className={styles.title}>Edit Profile</h1>
         <Form
           form={form}
           name="sign-up"
           labelCol={{ span: 32 }}
           wrapperCol={{ span: 32 }}
-          initialValues={{ agreement: true }}
+          initialValues={{ username: user?.username, email: user?.email, image: user?.image }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="on"
@@ -90,8 +94,8 @@ export default function SignUnPage() {
             name="email"
             normalize={(value) => value.trim().toLowerCase()}
             rules={[
-              { type: 'email', message: 'The input is not valid E-mail.' },
-              { required: true, message: 'Please input your email address.' },
+              { type: 'email', message: 'The input is not valid email.' },
+              { required: true, message: 'Please input your email!' },
             ]}
           >
             <Input className={styles.input} placeholder="Email address" />
@@ -99,64 +103,34 @@ export default function SignUnPage() {
 
           <Form.Item<FieldType>
             className={styles.formItem}
-            label="Password"
+            label="New password"
             name="password"
             rules={[
               { type: 'string' },
               { min: 6, message: 'Password must be at least 6 characters.' },
               { max: 40, message: 'Password must be at most 40 characters.' },
-              { required: true, message: 'Please input your password.' },
             ]}
           >
-            <Input.Password className={styles.input} placeholder="Password" />
+            <Input.Password className={styles.input} placeholder="New password" />
           </Form.Item>
           <Form.Item<FieldType>
             className={styles.formItem}
-            label="Repeat Password"
-            name="repeatPassword"
-            rules={[
-              { type: 'string' },
-              { required: true, message: 'Please repeat your password.' },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(new Error('Passwords must match'))
-                },
-              }),
-            ]}
+            label="Avatar Image (url)"
+            name="image"
+            rules={[{ type: 'url', message: 'The input is not valid URL.' }]}
           >
-            <Input.Password className={styles.input} placeholder="Password" />
+            <Input className={styles.input} placeholder="Avatar image" />
           </Form.Item>
 
-          <Form.Item<FieldType>
-            name="agreement"
-            valuePropName="checked"
-            rules={[
-              {
-                validator: (_, value) =>
-                  value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
-              },
-            ]}
-            wrapperCol={{ span: 32 }}
-          >
-            <Checkbox className={styles.checkbox}>I agree to the processing of my personal information</Checkbox>
-          </Form.Item>
           <Form.Item className={styles.formItem} wrapperCol={{ span: 32 }}>
             <Button disabled={loading === 'pending'} className={styles.button} type="primary" htmlType="submit" block>
-              Create
+              Save
             </Button>
           </Form.Item>
         </Form>
-
-        <div className={styles.offer}>
-          Already have an account?{' '}
-          <Link className={styles.link} to="/sign-in">
-            Sign In.
-          </Link>
-        </div>
       </div>
     </div>
   )
 }
+
+export default EditProfilePage

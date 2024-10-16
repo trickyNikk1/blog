@@ -1,29 +1,51 @@
 @import './variables/variables.scss';
 @font-face {
-  font-family: "Inter UI";
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: 
-    local("Inter UI Regular"), 
-    local("Inter-Regular"), 
-    url(./fonts/Inter-UI-Regular.woff), 
+    local("Inter"), 
+    local("Inter"), 
+    url(./assets/fonts/Inter.woff), 
     format("woff");
 }
 @font-face {
-  font-family: "Inter UI";
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: 
-    local("Inter UI Regular"), 
-    local("Inter-Regular"), 
-    url(./fonts/Inter-UI-Regular.woff2), 
+    local("Inter"), 
+    local("Inter"), 
+    url(./assets/fonts/Inter.woff2), 
+    format("woff2");
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: 
+    local("Roboto"), 
+    local("Roboto-Regular"), 
+    url(./assets/fonts/Roboto-Regular.woff), 
+    format("woff");
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: 
+    local("Roboto"), 
+    local("Roboto-Regular"), 
+    url(./assets/fonts/Inter.woff2), 
     format("woff2");
 }
 
 html {
-  font-family: "Inter UI", "system-ui";
+  font-family: "Inter", "system-ui";
 }
 
 html,
@@ -37,7 +59,6 @@ body {
 *,
 *::before,
 *::after {
-  font-family: "Inter UI", "system-ui";
   box-sizing: inherit;
 }
 
@@ -48,7 +69,6 @@ body {
   font-style: normal;
   font-weight: 400;
   line-height: 22px;
-  letter-spacing: 0.5px;
 }
 
 #root {

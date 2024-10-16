@@ -6,6 +6,7 @@ import Markdown from 'markdown-to-jsx'
 import { ReactComponent as Heart } from '../svgs/heart.svg'
 import { ReactComponent as HeartFilled } from '../svgs/heart_filled.svg'
 import type { ArticleType } from '../../types'
+import { useAuth } from '../../hooks'
 
 import styles from './article.module.scss'
 
@@ -14,7 +15,8 @@ type ArticleProps = {
   isArticlePage?: boolean
   isLogged?: boolean
 }
-export default function Article({ articleData: data, isArticlePage = false, isLogged = false }: ArticleProps) {
+export default function Article({ articleData: data, isArticlePage = false }: ArticleProps) {
+  const { isAuth } = useAuth()
   if (!data) return null
   const {
     title,
@@ -51,7 +53,7 @@ export default function Article({ articleData: data, isArticlePage = false, isLo
             <h2 className={styles.title}>{title}</h2>
           </Link>
           <div className={styles.heart}>
-            <button disabled={!isLogged} className={styles.button_heart} type="button">
+            <button disabled={!isAuth} className={styles.button_heart} type="button">
               {heartIcon}
             </button>
             <div className={styles.counter}>{favoritesCount}</div>

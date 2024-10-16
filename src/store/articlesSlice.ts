@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { AxiosError } from 'axios'
 
 import RealworldBlog from '../services/realworld-blog'
 import { ArticlesState, GetArticlesDataResponse } from '../types'
@@ -35,7 +36,7 @@ export const articlesSlice = createSlice({
     })
     builder.addCase(getArticlesData.rejected, (state, action) => {
       state.loading = 'failed'
-      state.error = action.error.message ? action.error.message : 'unknown error'
+      state.error = action.error as AxiosError
     })
   },
 })

@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios'
+
 export type ArticleType = {
   slug: string
   title: string
@@ -18,12 +20,12 @@ export type ArticleType = {
 
 export type ArticleState = {
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  error: null | string
+  error: null | AxiosError
   articleData: ArticleType | null
 }
 export type ArticlesState = {
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  error: null | string
+  error: null | AxiosError
   articles: ArticleType[]
   currentPage: number
   articlesCount: number
@@ -32,4 +34,30 @@ export type ArticlesState = {
 export type GetArticlesDataResponse = {
   articles: ArticleType[]
   articlesCount: number
+}
+
+export type UserType = {
+  email: string | null
+  username: string | null
+  bio: string | null
+  image: string | null
+  token: string | null
+}
+
+export type FieldErrorsType = {
+  email?: string
+  password?: string
+  username?: string
+  message?: string
+  error?: { status: number }
+  'email or password'?: string
+  image: string
+}
+export type AuthErrorsType = {
+  errors?: FieldErrorsType
+}
+export type UserState = {
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  error: null | AuthErrorsType
+  user: UserType
 }

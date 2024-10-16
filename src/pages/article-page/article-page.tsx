@@ -12,10 +12,10 @@ export default function ArticlePage() {
     if (!slug) return
     dispatch(getArticleData(slug))
   }, [dispatch, slug])
-  const { articleData, error, loading } = useAppSelector((state) => state.ArticleSlice)
+  const { articleData, error, loading } = useAppSelector((state) => state.article)
 
   const spinner = loading === 'pending' ? <Spin /> : null
-  const errorMessage = error ? <Alert message={error} type="error" /> : null
+  const errorMessage = error ? <Alert message={`${error.code} ${error.message}`} type="error" /> : null
   const article = articleData ? <Article articleData={articleData} isArticlePage={true} /> : null
   return (
     <>
