@@ -2,11 +2,13 @@ import React from 'react'
 import { format } from 'date-fns'
 import { Link } from 'react-router-dom'
 import Markdown from 'markdown-to-jsx'
+import { Popconfirm, PopconfirmProps, Button } from 'antd'
 
 import { ReactComponent as Heart } from '../svgs/heart.svg'
 import { ReactComponent as HeartFilled } from '../svgs/heart_filled.svg'
 import type { ArticleType } from '../../types'
-import { useAuth } from '../../hooks'
+import { useAppDispatch, useAuth } from '../../hooks'
+import { deleteArticle } from '../../store/articleSlice'
 
 import styles from './article.module.scss'
 
@@ -16,7 +18,7 @@ type ArticleProps = {
   isLogged?: boolean
 }
 export default function Article({ articleData: data, isArticlePage = false }: ArticleProps) {
-  const { isAuth } = useAuth()
+  const { isAuth, username: currentUsername, token } = useAuth()
   if (!data) return null
   const {
     title,
@@ -45,6 +47,37 @@ export default function Article({ articleData: data, isArticlePage = false }: Ar
     : format(new Date(updatedAt), 'MMMM dd, yyyy')
 
   const bodyElement = isArticlePage ? <Markdown className={styles.body}>{body}</Markdown> : null
+
+  const dispatch = useAppDispatch()
+  const confirm: PopconfirmProps['onConfirm'] = () => {
+    if (token) {
+      dispatch(deleteArticle({ slug, token }))
+    }
+  }
+
+  const cancel: PopconfirmProps['onCancel'] = () => {}
+  const isAuthor = currentUsername === username
+  const isEditable = isAuthor && isArticlePage
+  const buttons = isEditable ? (
+    <div className={styles.buttons}>
+      <Popconfirm
+        title={null}
+        description="Are you sure to delete this article?"
+        onConfirm={confirm}
+        onCancel={cancel}
+        okText="Yes"
+        cancelText="No"
+        placement="right"
+      >
+        <Button className={styles.button_delete} danger>
+          Delete
+        </Button>
+      </Popconfirm>
+      <Link className={styles.link + ' ' + styles.button_edit} to={`/articles/${slug}/edit`}>
+        Edit
+      </Link>
+    </div>
+  ) : null
   return (
     <article className={styles.article}>
       <div className={styles.content}>
@@ -63,15 +96,18 @@ export default function Article({ articleData: data, isArticlePage = false }: Ar
         <p className={styles.description}>{description}</p>
         {bodyElement}
       </div>
-      <a className={styles.link + ' ' + styles.info} href="/">
-        <div className={styles.info_text}>
-          <span className={styles.author}>{username}</span>
-          <span className={styles.date}>{formatedDate}</span>
+      <div className={styles.article_inner}>
+        <div className={styles.info}>
+          <div className={styles.info_text}>
+            <span className={styles.author}>{username}</span>
+            <span className={styles.date}>{formatedDate}</span>
+          </div>
+          <div className={styles['avatar-wrapper']}>
+            <img className={styles.avatar} src={image} alt={username} />
+          </div>
         </div>
-        <div className={styles['avatar-wrapper']}>
-          <img className={styles.avatar} src={image} alt={username} />
-        </div>
-      </a>
+        {buttons}
+      </div>
     </article>
   )
 }

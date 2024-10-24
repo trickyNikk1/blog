@@ -19,8 +19,10 @@ export type ArticleType = {
 }
 
 export type ArticleState = {
+  deleteStatus: 'idle' | 'pending' | 'succeeded' | 'failed'
+  editingStatus: 'idle' | 'pending' | 'succeeded' | 'failed'
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  error: null | AxiosError
+  error: null | ServerErrorsType
   articleData: ArticleType | null
 }
 export type ArticlesState = {
@@ -29,6 +31,16 @@ export type ArticlesState = {
   articles: ArticleType[]
   currentPage: number
   articlesCount: number
+}
+export type NewArticleState = {
+  error: null | ServerErrorsType
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+}
+export type NewArticleType = {
+  title: string
+  description: string
+  body: string
+  tagList: string[]
 }
 
 export type GetArticlesDataResponse = {
@@ -55,6 +67,11 @@ export type FieldErrorsType = {
 }
 export type AuthErrorsType = {
   errors?: FieldErrorsType
+}
+export type ServerErrorsType = {
+  message?: string
+  code?: string
+  errors?: { [key: string]: string }
 }
 export type UserState = {
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'

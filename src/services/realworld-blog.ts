@@ -68,4 +68,62 @@ export default class RealworldBlog {
     )
     return response.data.user as UserType
   }
+  async createArticle(title: string, description: string, body: string, tagList: string[] | null, token: string) {
+    const endpoint = 'articles'
+    const response = await axios.post(
+      this._baseUrl + endpoint,
+      {
+        article: {
+          title,
+          description,
+          body,
+          tagList,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }
+    )
+    return response.data.article
+  }
+
+  async updateArticle(
+    slug: string,
+    title: string,
+    description: string,
+    body: string,
+    tagList: string[] | null,
+    token: string
+  ) {
+    const endpoint = `articles/${slug}`
+    const response = await axios.put(
+      this._baseUrl + endpoint,
+      {
+        article: {
+          title,
+          description,
+          body,
+          tagList,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }
+    )
+    return response.data.article
+  }
+
+  async deleteArticle(slug: string, token: string) {
+    const endpoint = `articles/${slug}`
+    const response = await axios.delete(this._baseUrl + endpoint, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    })
+    return response
+  }
 }

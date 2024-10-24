@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import type { FormProps } from 'antd'
-import { Form, Input, Button, Alert } from 'antd'
-import { Link, useNavigate } from 'react-router-dom'
+import { Form, Input, Button, Alert, Spin } from 'antd'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 import { login, rebootLoading } from '../../store/authSlice'
 import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
@@ -17,15 +17,19 @@ type FieldType = {
 }
 
 export default function SignInPage() {
+  const location = useLocation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm<FieldType>()
   const { loading, error } = useAppSelector((state) => state.auth)
   const { isAuth } = useAuth()
   useEffect(() => {
+    dispatch(rebootLoading())
+  }, [])
+  useEffect(() => {
     if (isAuth) {
       dispatch(rebootLoading())
-      navigate('/')
+      navigate(location.state?.from || '/', { replace: true })
     }
   }, [isAuth, navigate])
 
@@ -47,8 +51,10 @@ export default function SignInPage() {
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
+  const spinner = loading === 'pending' ? <Spin className={styles.spinner} fullscreen={true} /> : null
   return (
     <div className={styles.wrapper}>
+      {spinner}
       {error?.errors?.message ? (
         <Alert message={error.errors.error?.status + ' ' + error.errors.message} type="error" />
       ) : null}

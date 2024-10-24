@@ -5,11 +5,13 @@ import storage from 'redux-persist/lib/storage'
 import { default as articlesSliceReducer } from './articlesSlice'
 import { default as articleSliceReducer } from './articleSlice'
 import { default as authSliceReducer } from './authSlice'
+import { default as newArticleSliceReducer } from './newArticleSlice'
 
 const rootReducer = combineReducers({
   articles: articlesSliceReducer,
   article: articleSliceReducer,
   auth: authSliceReducer,
+  newArticle: newArticleSliceReducer,
 })
 
 const persistConfig = {

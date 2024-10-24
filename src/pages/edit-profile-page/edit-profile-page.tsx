@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import type { FormProps } from 'antd'
-import { Form, Input, Button, Alert } from 'antd'
+import { Form, Input, Button, Alert, Spin } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
@@ -54,8 +54,11 @@ function EditProfilePage() {
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
+  const spinner = loading === 'pending' ? <Spin className={styles.spinner} fullscreen={true} /> : null
+
   return (
     <div className={styles.wrapper}>
+      {spinner}
       {error?.errors?.message ? (
         <Alert message={error.errors.error?.status + ' ' + error.errors.message} type="error" />
       ) : null}

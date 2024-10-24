@@ -12,6 +12,11 @@
     box-shadow: $shadow-2;
     gap: 16px;
     overflow: auto;
+    &_inner {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
 }
 
 .content {
@@ -19,6 +24,7 @@
     flex-direction: column;
     flex-basis: 682px;
     gap: 4px;
+    overflow: auto;
 }
 
 .tags {
@@ -43,16 +49,13 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 13px
+    gap: 13px;
+    overflow: auto;
 }
 
 .link {
     color: inherit;
     text-decoration: none;
-    &:hover .avatar {
-        transform: scale(1.1);
-        transition: all 0.3s ease-in-out;
-    }
 }
 
 .title {
@@ -60,6 +63,7 @@
     font-size: 20px;
     line-height: 28px;
     color: $info-color;
+    overflow: auto;
 }
 
 .description {
@@ -71,7 +75,32 @@
     align-items: center;
     gap: 4px;
 }
+.buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
+.button_edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border: 1px solid $success-color;
+    color: $success-color;
+    border-radius: 5px;
+    max-width: 65px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    height: 31px;
+}
+.button_delete {
+    border-radius: 5px;
+    max-width: 78px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    height: 31px;
+}
 .button_heart {
     padding: 0;
     background: none;
@@ -129,4 +158,13 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+.body img{
+    max-width: 100%;
+}
+.body {
+    overflow: auto;
+    hyphens: manual;
+    white-space: pre-wrap;
+    word-break: break-word;
 }

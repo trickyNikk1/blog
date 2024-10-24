@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import type { FormProps } from 'antd'
-import { Form, Input, Checkbox, Button, Alert } from 'antd'
+import { Form, Input, Checkbox, Button, Alert, Spin } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { rebootLoading, registerNewUser } from '../../store/authSlice'
@@ -33,6 +33,9 @@ export default function SignUnPage() {
     }
   }
   useEffect(() => {
+    dispatch(rebootLoading())
+  }, [])
+  useEffect(() => {
     if (isAuth) {
       dispatch(rebootLoading())
       navigate('/')
@@ -50,8 +53,11 @@ export default function SignUnPage() {
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
+  const spinner = loading === 'pending' ? <Spin className={styles.spinner} fullscreen={true} /> : null
+
   return (
     <div className={styles.wrapper}>
+      {spinner}
       {error?.errors?.message ? (
         <Alert message={error.errors.error?.status + ' ' + error.errors.message} type="error" />
       ) : null}

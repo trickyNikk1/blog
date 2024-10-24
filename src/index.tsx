@@ -16,9 +16,12 @@ root.render(
       theme={{
         token: {
           colorPrimary: '#1890ff',
+          colorError: ' #F5222D',
           borderRadius: 4,
           borderRadiusSM: 2,
           paddingXS: 2,
+          marginLG: 5,
+          controlHeight: 40,
         },
       }}
     >
