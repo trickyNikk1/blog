@@ -31,7 +31,7 @@ const EditArticlePage = () => {
   }
   useEffect(() => {
     if (isAuth && slug) {
-      dispatch(getArticleData(slug))
+      dispatch(getArticleData({ slug, token }))
     }
   }, [slug, dispatch, isAuth])
 

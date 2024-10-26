@@ -3,16 +3,17 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Spin, Alert } from 'antd'
 
 import { getArticleData, reset } from '../../store/articleSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
 import Article from '../../components/article'
 
 export default function ArticlePage() {
+  const { token } = useAuth()
   const { slug } = useParams()
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(reset())
     if (!slug) return
-    dispatch(getArticleData(slug))
+    dispatch(getArticleData({ slug, token }))
   }, [dispatch, slug])
   const navigate = useNavigate()
   const { deleteStatus } = useAppSelector((state) => state.article)

@@ -6,15 +6,16 @@ import { ArticleType, ArticleState, ServerErrorsType } from '../types'
 
 const blogService = new RealworldBlog()
 
-export const getArticleData = createAsyncThunk<ArticleType, string, { rejectValue: ServerErrorsType }>(
-  'article/getArticleData',
-  async (slug, { rejectWithValue }) => {
-    const response = await blogService.getArticleData(slug).catch((error: AxiosError) => {
-      return rejectWithValue(error.response?.data as ServerErrorsType)
-    })
-    return response
-  }
-)
+export const getArticleData = createAsyncThunk<
+  ArticleType,
+  { slug: string; token: string | null },
+  { rejectValue: ServerErrorsType }
+>('article/getArticleData', async ({ slug, token }, { rejectWithValue }) => {
+  const response = await blogService.getArticleData(slug, token).catch((error: AxiosError) => {
+    return rejectWithValue(error.response?.data as ServerErrorsType)
+  })
+  return response
+})
 
 export const updateArticle = createAsyncThunk<
   ArticleType,
@@ -37,6 +38,28 @@ export const deleteArticle = createAsyncThunk<void, { slug: string; token: strin
     })
   }
 )
+
+export const favoriteArticle = createAsyncThunk<
+  ArticleType,
+  { slug: string; token: string },
+  { rejectValue: ServerErrorsType }
+>('article/favoriteArticle', async ({ slug, token }, { rejectWithValue }) => {
+  const response = await blogService.favoriteArticle(slug, token).catch((error: AxiosError) => {
+    return rejectWithValue(error.response?.data as ServerErrorsType)
+  })
+  return response
+})
+
+export const unfavoriteArticle = createAsyncThunk<
+  ArticleType,
+  { slug: string; token: string },
+  { rejectValue: ServerErrorsType }
+>('article/unfavoriteArticle', async ({ slug, token }, { rejectWithValue }) => {
+  const response = await blogService.unfavoriteArticle(slug, token).catch((error: AxiosError) => {
+    return rejectWithValue(error.response?.data as ServerErrorsType)
+  })
+  return response
+})
 
 const initialState: ArticleState = {
   deleteStatus: 'idle',
@@ -103,6 +126,28 @@ export const articleSlice = createSlice({
       state.loading = 'failed'
       state.deleteStatus = 'failed'
       state.error = action.payload?.errors as ServerErrorsType
+    })
+    builder.addCase(favoriteArticle.pending, (state) => {
+      state.loading = 'pending'
+    })
+    builder.addCase(favoriteArticle.fulfilled, (state, action) => {
+      state.loading = 'succeeded'
+      state.articleData = action.payload
+    })
+    builder.addCase(favoriteArticle.rejected, (state, action) => {
+      state.loading = 'failed'
+      state.error = action.payload as ServerErrorsType
+    })
+    builder.addCase(unfavoriteArticle.pending, (state) => {
+      state.loading = 'pending'
+    })
+    builder.addCase(unfavoriteArticle.fulfilled, (state, action) => {
+      state.loading = 'succeeded'
+      state.articleData = action.payload
+    })
+    builder.addCase(unfavoriteArticle.rejected, (state, action) => {
+      state.loading = 'failed'
+      state.error = action.payload as ServerErrorsType
     })
   },
 })

@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { Pagination, Spin, Alert, ConfigProvider } from 'antd'
 
 import { getArticlesData } from '../../store/articlesSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
 import Article from '../../components/article'
 
 import styles from './articles-list-page.module.scss'
@@ -12,14 +12,15 @@ export default function ArticlesListPage() {
   const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const { token } = useAuth()
   useEffect(() => {
-    dispatch(getArticlesData(page))
+    dispatch(getArticlesData({ page, token }))
   }, [dispatch, page])
   const { articles: data, articlesCount, loading, error } = useAppSelector((state) => state.articles)
   const articles = data.map((articleData) => {
     return <Article key={articleData.slug} articleData={articleData} />
   })
-  const spinner = loading === 'pending' ? <Spin /> : null
+  const spinner = loading === 'pending' ? <Spin fullscreen={true} /> : null
   const errorMessage = error ? <Alert message={`Ooops! ${error.message}`} type="error" /> : null
   return (
     <>

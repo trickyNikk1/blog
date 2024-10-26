@@ -27,7 +27,7 @@ export type ArticleState = {
 }
 export type ArticlesState = {
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  error: null | AxiosError
+  error: null | ServerErrorsType | AxiosError
   articles: ArticleType[]
   currentPage: number
   articlesCount: number

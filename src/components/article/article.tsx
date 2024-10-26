@@ -8,7 +8,7 @@ import { ReactComponent as Heart } from '../svgs/heart.svg'
 import { ReactComponent as HeartFilled } from '../svgs/heart_filled.svg'
 import type { ArticleType } from '../../types'
 import { useAppDispatch, useAuth } from '../../hooks'
-import { deleteArticle } from '../../store/articleSlice'
+import { deleteArticle, favoriteArticle, unfavoriteArticle } from '../../store/articleSlice'
 
 import styles from './article.module.scss'
 
@@ -32,11 +32,12 @@ export default function Article({ articleData: data, isArticlePage = false }: Ar
     favoritesCount,
     slug,
   } = data
+  const dispatch = useAppDispatch()
   const { username, image } = author
   const tagsElements =
     tags &&
-    tags.map((tag) => (
-      <span key={tag} className={styles.tag}>
+    tags.map((tag, index) => (
+      <span key={tag + index} className={styles.tag}>
         {tag}
       </span>
     ))
@@ -48,10 +49,18 @@ export default function Article({ articleData: data, isArticlePage = false }: Ar
 
   const bodyElement = isArticlePage ? <Markdown className={styles.body}>{body}</Markdown> : null
 
-  const dispatch = useAppDispatch()
   const confirm: PopconfirmProps['onConfirm'] = () => {
     if (token) {
       dispatch(deleteArticle({ slug, token }))
+    }
+  }
+
+  const clickHeartHandler = () => {
+    if (token && !favorited) {
+      dispatch(favoriteArticle({ slug, token }))
+    }
+    if (token && favorited) {
+      dispatch(unfavoriteArticle({ slug, token }))
     }
   }
 
@@ -86,7 +95,7 @@ export default function Article({ articleData: data, isArticlePage = false }: Ar
             <h2 className={styles.title}>{title}</h2>
           </Link>
           <div className={styles.heart}>
-            <button disabled={!isAuth} className={styles.button_heart} type="button">
+            <button disabled={!isAuth} onClick={clickHeartHandler} className={styles.button_heart} type="button">
               {heartIcon}
             </button>
             <div className={styles.counter}>{favoritesCount}</div>

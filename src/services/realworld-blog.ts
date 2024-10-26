@@ -1,29 +1,44 @@
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 
 import { ArticleType, UserType } from '../types'
 
 export default class RealworldBlog {
   _baseUrl = 'https://blog-platform.kata.academy/api/'
-  async getArticlesData(page = 1) {
+  async getArticlesData(page = 1, token: string | null) {
     const endpoint = 'articles'
-    const response = await axios
-      .get(this._baseUrl + endpoint, {
+    let response
+    if (token) {
+      response = await axios.get(this._baseUrl + endpoint, {
+        params: {
+          limit: 5,
+          offset: (page - 1) * 5,
+        },
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+    } else {
+      response = await axios.get(this._baseUrl + endpoint, {
         params: {
           limit: 5,
           offset: (page - 1) * 5,
         },
       })
-      .catch((error: AxiosError) => {
-        console.error(error)
-        throw error
-      })
+    }
     return response
   }
-  async getArticleData(slug: string) {
+  async getArticleData(slug: string, token: string | null) {
     const endpoint = `articles/${slug}`
-    const response = await axios.get<{ article: ArticleType }>(this._baseUrl + endpoint).catch((error: AxiosError) => {
-      throw error
-    })
+    let response
+    if (token) {
+      response = await axios.get<{ article: ArticleType }>(this._baseUrl + endpoint, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+    } else {
+      response = await axios.get<{ article: ArticleType }>(this._baseUrl + endpoint)
+    }
     return response.data.article
   }
   async registerNewUser(username: string, email: string, password: string) {
@@ -125,5 +140,17 @@ export default class RealworldBlog {
       },
     })
     return response
+  }
+
+  async favoriteArticle(slug: string, token: string) {
+    const endpoint = `articles/${slug}/favorite`
+    const response = await axios.post(this._baseUrl + endpoint, {}, { headers: { Authorization: `Token ${token}` } })
+    return response.data.article
+  }
+
+  async unfavoriteArticle(slug: string, token: string) {
+    const endpoint = `articles/${slug}/favorite`
+    const response = await axios.delete(this._baseUrl + endpoint, { headers: { Authorization: `Token ${token}` } })
+    return response.data.article
   }
 }
