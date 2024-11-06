@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Spin, Alert } from 'antd'
 
+import { Article } from '@components/article'
+
 import { getArticleData, reset } from '../../store/articleSlice'
 import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
-import Article from '../../components/article'
 
-export default function ArticlePage() {
+export function ArticlePage() {
   const { token } = useAuth()
   const { slug } = useParams()
   const dispatch = useAppDispatch()

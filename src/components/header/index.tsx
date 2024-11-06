@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
 import { logout } from '../../store/authSlice'
 
 import styles from './header.module.scss'
-export default function Header() {
+export function Header() {
   const { isAuth } = useAuth()
   const dispatch = useAppDispatch()
   const { username, image } = useAppSelector((state) => state.auth.user)

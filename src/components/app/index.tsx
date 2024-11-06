@@ -1,20 +1,20 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import Layout from '../layout'
-import ArticlesListPage from '../../pages/articles-list-page/articles-list-page'
-import ArticlePage from '../../pages/article-page/article-page'
-import SignInPage from '../../pages/sign-in-page/sign-in-page'
-import SignUpPage from '../../pages/sign-up-page/sign-up-page'
-import NotFoundPage from '../../pages/not-found-page/not-found-page'
-import EditProfilePage from '../../pages/edit-profile-page'
-import RequireAuth from '../../hoc/require-auth'
-import NewArticlePage from '../../pages/new-article-page'
-import EditArticlePage from '../../pages/edit-article-page'
+import { ArticlesListPage } from '@pages/articles-list-page'
+import { ArticlePage } from '@pages/article-page/article-page'
+import { SignInPage } from '@pages/sign-in-page'
+import { SignUpPage } from '@pages/sign-up-page'
+import { NotFoundPage } from '@pages/not-found-page'
+import { EditProfilePage } from '@pages/edit-profile-page'
+import { EditArticlePage } from '@pages/edit-article-page'
+import { NewArticlePage } from '@pages/new-article-page'
+import RequireAuth from '@hoc/require-auth'
+import { Layout } from '@components/layout'
 
 import styles from './app.module.scss'
 
-export default function App() {
+export function App() {
   return (
     <div className={styles.app}>
       <Routes>

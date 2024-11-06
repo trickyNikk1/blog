@@ -5,9 +5,9 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
 import { PersistGate } from 'redux-persist/integration/react'
 
-import store, { persistor } from './store'
+import store, { persistor } from '@store/index'
 import './index.scss'
-import App from './components/app'
+import { App } from '@components/app'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(

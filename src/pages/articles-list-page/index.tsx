@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { Pagination, Spin, Alert, ConfigProvider } from 'antd'
 
-import { getArticlesData } from '../../store/articlesSlice'
-import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
-import Article from '../../components/article'
+import { getArticlesData } from '@store/articlesSlice'
+import { useAppDispatch, useAppSelector, useAuth } from '@hooks/index'
+import { Article } from '@components/article'
 
 import styles from './articles-list-page.module.scss'
-export default function ArticlesListPage() {
+export function ArticlesListPage() {
   const [searchParams] = useSearchParams()
   const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
   const navigate = useNavigate()

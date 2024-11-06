@@ -1,17 +1,16 @@
-@import '/src/variables/variables.scss';
-.app{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    max-width: 1440px;
-    margin: 0 auto;
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 .main {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
-    flex-shrink: 0;
-    align-items: center;
-    padding: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 26px;
 }

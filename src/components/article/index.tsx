@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 import Markdown from 'markdown-to-jsx'
 import { Popconfirm, PopconfirmProps, Button } from 'antd'
 
-import { ReactComponent as Heart } from '../svgs/heart.svg'
-import { ReactComponent as HeartFilled } from '../svgs/heart_filled.svg'
-import type { ArticleType } from '../../types'
-import { useAppDispatch, useAuth } from '../../hooks'
-import { deleteArticle, favoriteArticle, unfavoriteArticle } from '../../store/articleSlice'
+import type { ArticleType } from '@my-types/index'
+import { useAppDispatch, useAuth } from '@hooks/index'
+import { deleteArticle, favoriteArticle, unfavoriteArticle } from '@store/articleSlice'
+import { ReactComponent as HeartFilled } from '@svgs/heart_filled.svg'
+import { ReactComponent as Heart } from '@svgs/heart.svg'
 
 import styles from './article.module.scss'
 
@@ -17,7 +17,7 @@ type ArticleProps = {
   isArticlePage?: boolean
   isLogged?: boolean
 }
-export default function Article({ articleData: data, isArticlePage = false }: ArticleProps) {
+export function Article({ articleData: data, isArticlePage = false }: ArticleProps) {
   const { isAuth, username: currentUsername, token } = useAuth()
   if (!data) return null
   const {

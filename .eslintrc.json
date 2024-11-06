@@ -3,7 +3,7 @@
     "browser": true,
     "es2023": true
   },
-  "ignorePatterns": ["node_modules", "dist", "build"],
+  "ignorePatterns": ["node_modules", "dist", "build", "config", "scripts", "react-app-env.d.ts"],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -20,9 +20,11 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "./"
   },
-  "plugins": ["react", "prettier", "import", "jsx-a11y"],
+  "plugins": ["react", "prettier", "import", "jsx-a11y", "@typescript-eslint"],
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "prettier/prettier": "error",
@@ -59,7 +61,8 @@
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"],
         "moduleDirectory": ["node_modules", "src/"]
-      }
+      },
+      "typescript": {}
     }
   }
 }

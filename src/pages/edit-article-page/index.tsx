@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { useLocation, useParams, Navigate, useNavigate } from 'react-router-dom'
 import { Spin, Alert, Form, FormProps } from 'antd'
 
-import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
-import { getArticleData, updateArticle } from '../../store/articleSlice'
-import ArticleForm from '../../components/article-form'
+import { useAppDispatch, useAppSelector, useAuth } from '@hooks/index'
+import { getArticleData, updateArticle } from '@store/articleSlice'
+import { ArticleForm } from '@components/article-form'
 
 import styles from './edit-article-page.module.scss'
 
@@ -14,7 +14,7 @@ type FieldType = {
   body?: string
   tagList?: { tag: string }[]
 }
-const EditArticlePage = () => {
+export const EditArticlePage = () => {
   const { isAuth, username: currentUsername, token } = useAuth()
   const location = useLocation()
   if (!isAuth) {
@@ -90,5 +90,3 @@ const EditArticlePage = () => {
     </div>
   )
 }
-
-export default EditArticlePage

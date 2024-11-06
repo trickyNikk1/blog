@@ -12,7 +12,7 @@ type FieldType = {
   body?: string
   tagList?: { tag: string }[]
 }
-export default function ArticleForm(props: FormProps<FieldType>) {
+export function ArticleForm(props: FormProps<FieldType>) {
   const { form, onFinish, onFinishFailed, initialValues } = props
   return (
     <Form

@@ -3,8 +3,8 @@ import type { FormProps } from 'antd'
 import { Form, Input, Button, Alert, Spin } from 'antd'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
-import { login, rebootLoading } from '../../store/authSlice'
-import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
+import { login, rebootLoading } from '@store/authSlice'
+import { useAppDispatch, useAppSelector, useAuth } from '@hooks/index'
 
 import styles from './sign-in-page.module.scss'
 
@@ -16,7 +16,7 @@ type FieldType = {
   agreement?: string
 }
 
-export default function SignInPage() {
+export function SignInPage() {
   const location = useLocation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()

@@ -3,9 +3,9 @@ import { Form, Spin, Alert } from 'antd'
 import type { FormProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { createNewArticle, rebootLoading } from '../../store/newArticleSlice'
-import ArticleForm from '../../components/article-form'
+import { useAppDispatch, useAppSelector } from '@hooks/index'
+import { createNewArticle, rebootLoading } from '@store/newArticleSlice'
+import { ArticleForm } from '@components/article-form'
 
 import styles from './new-article-page.module.scss'
 
@@ -15,7 +15,7 @@ type FieldType = {
   body?: string
   tagList?: { tag: string }[]
 }
-const NewArticlePage = () => {
+export const NewArticlePage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [form] = Form.useForm<FieldType>()
@@ -59,5 +59,3 @@ const NewArticlePage = () => {
     </div>
   )
 }
-
-export default NewArticlePage

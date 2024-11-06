@@ -3,8 +3,8 @@ import type { FormProps } from 'antd'
 import { Form, Input, Button, Alert, Spin } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
-import { updateProfile } from '../../store/authSlice'
+import { useAppDispatch, useAppSelector, useAuth } from '@hooks/index'
+import { updateProfile } from '@store/authSlice'
 
 import styles from './edit-profile-page.module.scss'
 
@@ -14,7 +14,7 @@ type FieldType = {
   password?: string
   image?: string
 }
-function EditProfilePage() {
+export function EditProfilePage() {
   const navigate = useNavigate()
   const { isAuth } = useAuth()
   const [form] = Form.useForm<FieldType>()
@@ -135,5 +135,3 @@ function EditProfilePage() {
     </div>
   )
 }
-
-export default EditProfilePage

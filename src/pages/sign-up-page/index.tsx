@@ -3,8 +3,8 @@ import type { FormProps } from 'antd'
 import { Form, Input, Checkbox, Button, Alert, Spin } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { rebootLoading, registerNewUser } from '../../store/authSlice'
-import { useAppDispatch, useAppSelector, useAuth } from '../../hooks'
+import { rebootLoading, registerNewUser } from '@store/authSlice'
+import { useAppDispatch, useAppSelector, useAuth } from '@hooks/index'
 
 import styles from './sign-up-page.module.scss'
 
@@ -16,7 +16,7 @@ type FieldType = {
   agreement?: string
 }
 
-export default function SignUnPage() {
+export function SignUpPage() {
   const navigate = useNavigate()
   const { isAuth } = useAuth()
   const [form] = Form.useForm<FieldType>()

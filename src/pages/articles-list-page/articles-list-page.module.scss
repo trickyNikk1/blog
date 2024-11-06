@@ -1,12 +1,10 @@
-@import '/src/variables/variables.scss';
-
 .list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 26px;
-    gap: 26px;
-    max-width: 938px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 26px;
+  gap: 26px;
+  max-width: 938px;
+  width: 100%;
 }
