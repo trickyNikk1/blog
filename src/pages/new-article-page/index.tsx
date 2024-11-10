@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
-import { Form, Spin, Alert } from 'antd'
+import { Form } from 'antd'
 import type { FormProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '@hooks/index'
 import { createNewArticle, rebootLoading } from '@store/newArticleSlice'
 import { ArticleForm } from '@components/article-form'
+import { SetFormContent } from '@hoc/set-form-content'
 
 import styles from './new-article-page.module.scss'
 
@@ -44,18 +45,15 @@ export const NewArticlePage = () => {
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
-  const spinner = loading === 'pending' ? <Spin className={styles.spinner} fullscreen={true} /> : null
-  const alert = error?.message ? (
-    <Alert className={styles.alert} message="Error" description={error.message} type="error" showIcon closable />
-  ) : null
+
   return (
     <div className={styles.wrapper}>
-      {spinner}
-      {alert}
-      <div className={styles.container}>
-        <h1 className={styles.title}>Create new article</h1>
-        <ArticleForm form={form} onFinish={onFinish} onFinishFailed={onFinishFailed} />
-      </div>
+      <SetFormContent status={loading} error={error}>
+        <div className={styles.container}>
+          <h1 className={styles.title}>Create new article</h1>
+          <ArticleForm form={form} onFinish={onFinish} onFinishFailed={onFinishFailed} />
+        </div>
+      </SetFormContent>
     </div>
   )
 }
