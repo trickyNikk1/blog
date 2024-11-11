@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+export type LoadingType = 'idle' | 'pending' | 'succeeded' | 'failed'
 
 export type ArticleType = {
   slug: string
@@ -19,22 +19,22 @@ export type ArticleType = {
 }
 
 export type ArticleState = {
-  deleteStatus: 'idle' | 'pending' | 'succeeded' | 'failed'
-  editingStatus: 'idle' | 'pending' | 'succeeded' | 'failed'
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  error: null | ServerErrorsType
+  deleteStatus: LoadingType
+  editingStatus: LoadingType
+  loading: LoadingType
+  error: null | FieldErrorsType
   articleData: ArticleType | null
 }
 export type ArticlesState = {
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  error: null | ServerErrorsType | AxiosError
+  loading: LoadingType
+  error: null | FieldErrorsType
   articles: ArticleType[]
   currentPage: number
   articlesCount: number
 }
 export type NewArticleState = {
-  error: null | ServerErrorsType
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  error: null | FieldErrorsType
+  loading: LoadingType
 }
 export type NewArticleType = {
   title: string
@@ -63,18 +63,13 @@ export type FieldErrorsType = {
   message?: string
   error?: { status: number }
   'email or password'?: string
-  image: string
-}
-export type AuthErrorsType = {
-  errors?: FieldErrorsType
+  image?: string
 }
 export type ServerErrorsType = {
-  message?: string
-  code?: string
-  errors?: { [key: string]: string }
+  errors?: FieldErrorsType
 }
 export type UserState = {
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  error: null | AuthErrorsType
+  loading: LoadingType
+  error: FieldErrorsType | null
   user: UserType
 }

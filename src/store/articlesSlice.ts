@@ -1,26 +1,31 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import RealworldBlog from '../services/realworld-blog'
-import { ArticlesState, ArticleType, GetArticlesDataResponse, ServerErrorsType } from '../types'
+import RealworldBlog from '@services/realworld-blog'
+import { ArticlesState, ArticleType, FieldErrorsType, GetArticlesDataResponse, ServerErrorsType } from '@my-types/index'
 
 const blogService = new RealworldBlog()
 
-export const getArticlesData = createAsyncThunk<GetArticlesDataResponse, { page: number; token: string | null }>(
-  'blog/getArticlesData',
-  async ({ page, token }) => {
-    const response = await blogService.getArticlesData(page, token)
-    return response?.data
-  }
-)
+export const getArticlesData = createAsyncThunk<
+  GetArticlesDataResponse,
+  { page: number; token: string | null },
+  { rejectValue: FieldErrorsType }
+>('blog/getArticlesData', async ({ page, token }, { rejectWithValue }) => {
+  const response = await blogService.getArticlesData(page, token).catch((error: AxiosError<ServerErrorsType>) => {
+    if (error.response?.data.errors) return rejectWithValue(error.response?.data.errors)
+    return rejectWithValue({ message: 'Unknown error' })
+  })
+  return response
+})
 
 export const favoriteArticle = createAsyncThunk<
   ArticleType,
   { slug: string; token: string },
-  { rejectValue: ServerErrorsType }
+  { rejectValue: FieldErrorsType }
 >('article/favoriteArticle', async ({ slug, token }, { rejectWithValue }) => {
-  const response = await blogService.favoriteArticle(slug, token).catch((error: AxiosError) => {
-    return rejectWithValue(error.response?.data as ServerErrorsType)
+  const response = await blogService.favoriteArticle(slug, token).catch((error: AxiosError<ServerErrorsType>) => {
+    if (error.response?.data.errors) return rejectWithValue(error.response?.data.errors)
+    return rejectWithValue({ message: 'Unknown error' })
   })
   return response
 })
@@ -28,10 +33,11 @@ export const favoriteArticle = createAsyncThunk<
 export const unfavoriteArticle = createAsyncThunk<
   ArticleType,
   { slug: string; token: string },
-  { rejectValue: ServerErrorsType }
+  { rejectValue: FieldErrorsType }
 >('article/unfavoriteArticle', async ({ slug, token }, { rejectWithValue }) => {
-  const response = await blogService.unfavoriteArticle(slug, token).catch((error: AxiosError) => {
-    return rejectWithValue(error.response?.data as ServerErrorsType)
+  const response = await blogService.unfavoriteArticle(slug, token).catch((error: AxiosError<ServerErrorsType>) => {
+    if (error.response?.data.errors) return rejectWithValue(error.response?.data.errors)
+    return rejectWithValue({ message: 'Unknown error' })
   })
   return response
 })
@@ -59,7 +65,7 @@ export const articlesSlice = createSlice({
     })
     builder.addCase(getArticlesData.rejected, (state, action) => {
       state.loading = 'failed'
-      state.error = action.error as AxiosError
+      state.error = action.error
     })
     builder.addCase(favoriteArticle.pending, (state) => {
       state.loading = 'pending'
@@ -75,7 +81,7 @@ export const articlesSlice = createSlice({
     })
     builder.addCase(favoriteArticle.rejected, (state, action) => {
       state.loading = 'failed'
-      state.error = action.error as ServerErrorsType
+      state.error = action.payload ?? null
     })
     builder.addCase(unfavoriteArticle.pending, (state) => {
       state.loading = 'pending'
@@ -91,7 +97,7 @@ export const articlesSlice = createSlice({
     })
     builder.addCase(unfavoriteArticle.rejected, (state, action) => {
       state.loading = 'failed'
-      state.error = action.error as ServerErrorsType
+      state.error = action.payload ?? null
     })
   },
 })

@@ -1,0 +1,31 @@
+.heart {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.button_heart {
+  padding: 0;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+
+  &:hover .icon {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+
+    & path {
+      fill: $highlight-color;
+    }
+  }
+
+  &:disabled:hover .icon {
+    cursor: initial;
+    transform: none;
+    transition: all 0.3s ease-in-out;
+    & path {
+      fill: initial;
+    }
+  }
+}

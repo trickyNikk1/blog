@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { ArticleType, UserType } from '../types'
+import { ArticleType, GetArticlesDataResponse, UserType } from '../types'
 
 export default class RealworldBlog {
   _baseUrl = 'https://blog-platform.kata.academy/api/'
@@ -8,7 +8,7 @@ export default class RealworldBlog {
     const endpoint = 'articles'
     let response
     if (token) {
-      response = await axios.get(this._baseUrl + endpoint, {
+      response = await axios.get<GetArticlesDataResponse>(this._baseUrl + endpoint, {
         params: {
           limit: 5,
           offset: (page - 1) * 5,
@@ -18,14 +18,14 @@ export default class RealworldBlog {
         },
       })
     } else {
-      response = await axios.get(this._baseUrl + endpoint, {
+      response = await axios.get<GetArticlesDataResponse>(this._baseUrl + endpoint, {
         params: {
           limit: 5,
           offset: (page - 1) * 5,
         },
       })
     }
-    return response
+    return response.data
   }
   async getArticleData(slug: string, token: string | null) {
     const endpoint = `articles/${slug}`
