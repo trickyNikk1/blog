@@ -1,20 +1,21 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import RealworldBlog from '../services/realworld-blog'
-import { AuthErrorsType, UserState, UserType } from '../types'
+import RealworldBlog from '@services/realworld-blog'
+import { FieldErrorsType, ServerErrorsType, UserState, UserType } from '@my-types/index'
 
 const blogService = new RealworldBlog()
 
 export const updateProfile = createAsyncThunk<
   UserType,
   { username: string; email: string; password: string; image: string; token: string },
-  { rejectValue: AxiosError }
+  { rejectValue: FieldErrorsType }
 >('user/updateProfile', async ({ username, email, password, image, token }, { rejectWithValue }) => {
   const response = await blogService
     .updateProfile(username, email, password, image, token)
-    .catch((error: AxiosError) => {
-      return rejectWithValue(error.response?.data as AxiosError)
+    .catch((error: AxiosError<ServerErrorsType>) => {
+      if (error.response?.data.errors) return rejectWithValue(error.response?.data.errors)
+      return rejectWithValue({ message: 'Unknown error' })
     })
   return response
 })
@@ -22,19 +23,23 @@ export const updateProfile = createAsyncThunk<
 export const registerNewUser = createAsyncThunk<
   UserType,
   { username: string; email: string; password: string },
-  { rejectValue: AxiosError }
+  { rejectValue: FieldErrorsType }
 >('user/registerNewUser', async ({ username, email, password }, { rejectWithValue }) => {
-  const response = await blogService.registerNewUser(username, email, password).catch((error: AxiosError) => {
-    return rejectWithValue(error.response?.data as AxiosError)
-  })
+  const response = await blogService
+    .registerNewUser(username, email, password)
+    .catch((error: AxiosError<ServerErrorsType>) => {
+      if (error.response?.data.errors) return rejectWithValue(error.response?.data.errors)
+      return rejectWithValue({ message: 'Unknown error' })
+    })
   return response
 })
 
-export const login = createAsyncThunk<UserType, { email: string; password: string }, { rejectValue: AxiosError }>(
+export const login = createAsyncThunk<UserType, { email: string; password: string }, { rejectValue: FieldErrorsType }>(
   'user/login',
   async ({ email, password }, { rejectWithValue }) => {
-    const response = await blogService.login(email, password).catch((error: AxiosError) => {
-      return rejectWithValue(error.response?.data as AxiosError)
+    const response = await blogService.login(email, password).catch((error: AxiosError<ServerErrorsType>) => {
+      if (error.response?.data.errors) return rejectWithValue(error.response?.data.errors)
+      return rejectWithValue({ message: 'Unknown error' })
     })
     return response
   }
@@ -80,7 +85,7 @@ export const authSlice = createSlice({
       .addCase(registerNewUser.rejected, (state, action) => {
         state.loading = 'failed'
         state.user = notAuthUser
-        state.error = action.payload as AuthErrorsType
+        state.error = action.payload ?? null
       })
       .addCase(login.pending, (state) => {
         state.loading = 'pending'
@@ -94,7 +99,7 @@ export const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loading = 'failed'
         state.user = notAuthUser
-        state.error = action.payload as AuthErrorsType
+        state.error = action.payload ?? null
       })
       .addCase(updateProfile.pending, (state) => {
         state.loading = 'pending'
@@ -107,7 +112,7 @@ export const authSlice = createSlice({
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = 'failed'
-        state.error = action.payload as AuthErrorsType
+        state.error = action.payload ?? null
       })
   },
 })
